@@ -27,6 +27,8 @@ name <- name[order(nchar(name), decreasing = TRUE)]
 name <- name[nchar(name) >= 2]
 name_token_count <- plyr::count(name)
 name_token_count$token_len <- unlist(lapply(as.vector(name_token_count$x), nchar))
+# allow to include tokens of length 2 given a certain frequency 
+# reasoning is to catch abbreviations used to distinguish company units, like Bank I, Bank II 
 name_token_count <- subset(name_token_count, freq >= 5 & token_len >= 3 | freq >= 50)
 name_token_count <- arrange(name_token_count, desc(freq))
 
