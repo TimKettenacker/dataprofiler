@@ -90,6 +90,21 @@ names(name_token_count) <- c("Token", "Examples in data", "Frequency of the toke
 datatable(name_token_count, options = list(pageLength = 10))
 
 
+# next, let's have a look at some KPIs for postal addresses
+
+# find length of all postal code values
+
+postal_code_length <- nchar(raw_data$zip) # zip is a placeholder for the postal code column, please change manually
+postal_code_length_tbl <- table(postal_code_length)
+postal_code_blanks <- sum(is.na(raw_data$zip))
+
+# find cities with extraordinary long names (hinting at suburbs in the same field), short names (indicating random dummy values) and blanks
+
+city_exceeding <- which(nchar(raw_data$city) > 20) # city is a placeholder for the city column, please change manually
+city_exceeding <- raw_data[city_exceeding,]
+city_short <- which(nchar(raw_data$city) < 3)
+city_short <- raw_data[city_short,]
+city_blanks <- sum(is.na(raw_data$city))
 
 
 
