@@ -62,11 +62,13 @@ examples <- vector(mode = "list", length = length(name_token_count$x))
 req_prep_list <- laply(name_token_count$x, sprintf, fmt = '*%s*')
 total_hits <- vector(mode = "list", length = length(name_token_count$x))
 for(q in 1:length(req_prep_list)){
+  tryCatch({
   response <- Search(index = "bamboo-shack", q = req_prep_list[q], size = 10000)
   total_hits[q] <- response$hits$total
   examples[q] <- paste(as.character(response$hits$hits[[1]]$`_source`$name), 
                                   as.character(response$hits$hits[[3]]$`_source`$name),
                                   sep = " - ")
+  }, error=function(e){cat(conditionMessage(e), " occurred in line ", q, "\n")})
 }
 
 # one can compare the amount of words in the response of elastic with the relative frequency of tokens
